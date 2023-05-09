@@ -1,20 +1,30 @@
 const express = require("express");
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+let mytodo = {
+  id: 1,
+  title: "title no 1",
+};
 
 app.get("/", function (req, res) {
-  res.send("Hello World");
+  res.json(mytodo);
 });
 
-app.get("/json", function (req, res) {
-  res.json({
-    source: "server",
-    message: "hello",
-  });
+app.post("/", function (req, res) {
+  const body = req.body;
+  body.id = 101;
+  res.json(body);
 });
 
-app.get("/html", function (req, res) {
-  res.sendFile(__dirname + "/main.html");
+app.put("/", function (req, res) {
+  const body = req.body;
+  const newTitle = body.title;
+
+  mytodo.title = newTitle;
+  res.json(mytodo);
 });
 
 app.listen(4000);
